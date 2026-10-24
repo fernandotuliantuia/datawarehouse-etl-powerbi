@@ -1,0 +1,1436 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/30/2026 6:11:25 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="localhost"
+  DTS:CreatorName="LOCALPC\usuario"
+  DTS:DTSID="{8C1759A8-4F75-4328-8154-48BD227D4A6B}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="17.0.1016.0"
+  DTS:LocaleID="11274"
+  DTS:ObjectName="Package1"
+  DTS:PackageType="5"
+  DTS:VersionBuild="18"
+  DTS:VersionGUID="{9885B2D0-64A7-4EE6-9E00-3DFB9EEA65E5}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[localhost.DW_TDC]"
+      DTS:CreationName="ADO.NET:Microsoft.Data.SqlClient.SqlConnection, Microsoft.Data.SqlClient, Version=5.0.0.0, Culture=neutral, PublicKeyToken=23ec7fc2d6eaa4a5"
+      DTS:DTSID="{D48095B1-5940-4408-9A5A-187B880582F9}"
+      DTS:ObjectName="localhost.DW_TDC">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=localhost;Initial Catalog=DW_TDC;Integrated Security=True;Trust Server Certificate=True;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[localhost.DW_TDC1]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{C6122343-CD8D-4A28-BBF9-C1366DB57D33}"
+      DTS:ObjectName="localhost.DW_TDC1">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=localhost;Initial Catalog=DW_TDC;Provider=SQLOLEDB.1;Integrated Security=SSPI;Application Name=SSIS-Package1-{C6122343-CD8D-4A28-BBF9-C1366DB57D33}localhost.DW_TDC1;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[localhost.TDChistorySales]"
+      DTS:CreationName="ADO.NET:Microsoft.Data.SqlClient.SqlConnection, Microsoft.Data.SqlClient, Version=5.0.0.0, Culture=neutral, PublicKeyToken=23ec7fc2d6eaa4a5"
+      DTS:DTSID="{170D3855-9C23-4704-AFE3-50CA49A895BF}"
+      DTS:ObjectName="localhost.TDChistorySales">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=localhost;Initial Catalog=TDChistorySales;Integrated Security=True;Trust Server Certificate=True;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[MySQLsales.root]"
+      DTS:CreationName="ADO.NET:System.Data.Odbc.OdbcConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+      DTS:DTSID="{D2E48DCF-E1FA-406C-83C9-431C85066292}"
+      DTS:ObjectName="MySQLsales.root">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="uid=root;Dsn=MySQLsales;">
+          <DTS:Password
+            DTS:Name="pwd"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAWq5rl5BML0iS1x9hw8qoJgAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAADUuLqUbX82KwZ+aigdZxGPxY33VWc95JftdUPcNBOouAAAAAAOgAAAAAIAACAAAAA/5fyp10pkXis1UdN0ympE1XYWIkOTWBs15S7YaZmnAyAAAACFzrvb6ONZdYsaBomrsQiLOpgXAwrNr8uWFCGLnv6JiUAAAACZTdynJPbcDiPvsGXub+jShoo++pNg73zcEAMtrPx82JzuhWgn0gChHSfxR6TktX80URMGgyAwI2IT7/4C5LeT</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Execute SQL Task - Actualizar descuentos"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{936BCE17-E680-4963-9035-F49B9C8C4575}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Execute SQL Task - Actualizar descuentos"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{C6122343-CD8D-4A28-BBF9-C1366DB57D33}"
+          SQLTask:SqlStatementSource=";WITH Totales AS&#xA;(&#xA;    SELECT&#xA;        BillingID,&#xA;        SUM(Quantity * UnitPrice) AS TotalBilling&#xA;    FROM StageSales&#xA;    GROUP BY BillingID&#xA;)&#xA;&#xA;UPDATE ss&#xA;SET DiscountPercent = ISNULL(d.Percentage, 0)&#xA;FROM StageSales ss&#xA;INNER JOIN Totales t&#xA;    ON ss.BillingID = t.BillingID&#xA;OUTER APPLY&#xA;(&#xA;    SELECT TOP 1 Percentage&#xA;    FROM StageDiscounts sd&#xA;    WHERE&#xA;        sd.TotalBilling &lt;= t.TotalBilling&#xA;        AND sd.DateFrom &lt;= TRY_CONVERT(datetime, ss.SaleDate, 101)&#xA;        AND (sd.DateUntil IS NULL OR sd.DateUntil &gt;= TRY_CONVERT(datetime, ss.SaleDate, 101))&#xA;    ORDER BY sd.TotalBilling DESC&#xA;) d;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\STAGING de actuales -Task"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{FDE388D3-3BC4-4C17-BE94-5E95943D5D6D}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="STAGING de actuales -Task"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\STAGING de actuales -Task\ADO NET Destination"
+              componentClassID="Microsoft.ManagedComponentHost"
+              contactInfo="Loads data into an ADO.NET-compliant database that uses a database table or view. Load data into a new or existing table. For example, use an ADO.NET provider for ODBC to load data into an ODBC destination.;Microsoft Corporation; Microsoft SQL Server; © Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
+              description="Loads data into an ADO.NET-compliant database that uses a database table or view. Load data into a new or existing table. For example, use an ADO.NET provider for ODBC to load data into an ODBC destination."
+              name="ADO NET Destination"
+              usesDispositions="true"
+              version="2">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="The Destination database table name."
+                  expressionType="Notify"
+                  name="TableOrViewName"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">"dbo"."StageSales"</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specify the number of rows per batch. The default is 0 which uses the same size as SSIS internal buffer. "
+                  expressionType="Notify"
+                  name="BatchSize">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out. A value of 0 indicates infinite time-out. "
+                  expressionType="Notify"
+                  name="CommandTimeout">30</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Specifies whether to use the SqlBulkCopy interface to improve the performance of bulk insert operations. Only certain providers support this interface."
+                  expressionType="Notify"
+                  name="UseBulkInsertWhenPossible">true</property>
+                <property
+                  dataType="System.String"
+                  name="UserComponentTypeName">Microsoft.ADONETDestination</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\STAGING de actuales -Task\ADO NET Destination.Connections[IDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[localhost.DW_TDC]"
+                  connectionManagerRefId="Package.ConnectionManagers[localhost.DW_TDC]"
+                  description="Managed connection manager"
+                  name="IDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input]"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="ADO NET Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[QUANTITY]"
+                      cachedDataType="i2"
+                      cachedName="QUANTITY"
+                      externalMetadataColumnId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[Quantity]"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[QUANTITY]" />
+                    <inputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[REGION]"
+                      cachedDataType="wstr"
+                      cachedLength="90"
+                      cachedName="REGION"
+                      externalMetadataColumnId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[ZipCode]"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[REGION]" />
+                    <inputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[UnitPrice]"
+                      cachedDataType="r8"
+                      cachedName="UnitPrice"
+                      externalMetadataColumnId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[UnitPrice]"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[UnitPrice]" />
+                    <inputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[BILLING_ID]"
+                      cachedDataType="i4"
+                      cachedName="BILLING_ID"
+                      externalMetadataColumnId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[BillingID]"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[BILLING_ID]" />
+                    <inputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[SaleDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="SaleDate"
+                      externalMetadataColumnId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[SaleDate]"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[SaleDate]" />
+                    <inputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[CUSTOMER_ID]"
+                      cachedDataType="i2"
+                      cachedName="CUSTOMER_ID"
+                      externalMetadataColumnId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[CustomerID]"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[CUSTOMER_ID]" />
+                    <inputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[EMPLOYEE_ID]"
+                      cachedDataType="i2"
+                      cachedName="EMPLOYEE_ID"
+                      externalMetadataColumnId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[EmployeeID]"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[EMPLOYEE_ID]" />
+                    <inputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[PRODUCT_ID]"
+                      cachedDataType="i2"
+                      cachedName="PRODUCT_ID"
+                      externalMetadataColumnId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[ProductID]"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[PRODUCT_ID]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[BillingID]"
+                      dataType="i4"
+                      name="BillingID" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[SaleDate]"
+                      dataType="wstr"
+                      length="30"
+                      name="SaleDate" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[CustomerID]"
+                      dataType="wstr"
+                      length="20"
+                      name="CustomerID" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[ProductID]"
+                      dataType="wstr"
+                      length="20"
+                      name="ProductID" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[EmployeeID]"
+                      dataType="wstr"
+                      length="20"
+                      name="EmployeeID" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[ZipCode]"
+                      dataType="wstr"
+                      length="10"
+                      name="ZipCode" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[Quantity]"
+                      dataType="i4"
+                      name="Quantity" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[UnitPrice]"
+                      dataType="numeric"
+                      name="UnitPrice"
+                      precision="10"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[DiscountPercent]"
+                      dataType="numeric"
+                      name="DiscountPercent"
+                      precision="5"
+                      scale="2" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\STAGING de actuales -Task\ADO NET Destination.Outputs[ADO NET Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="ADO NET Destination Error Output"
+                  synchronousInputId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Destination.Outputs[ADO NET Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Destination.Outputs[ADO NET Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Destination.Outputs[ADO NET Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Destination.Outputs[ADO NET Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\STAGING de actuales -Task\ADO NET Source"
+              componentClassID="Microsoft.ManagedComponentHost"
+              contactInfo="Consumes data from SQL Server, OLE DB, ODBC, or Oracle, using the corresponding .NET Framework data provider. Use a Transact-SQL statement to define the result set. For example, extract data from SQL Server with the .NET Framework data provider for SQL Server.;Microsoft Corporation; Microsoft SQL Server; © Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="Consumes data from SQL Server, OLE DB, ODBC, or Oracle, using the corresponding .NET Framework data provider. Use a Transact-SQL statement to define the result set. For example, extract data from SQL Server with the .NET Framework data provider for SQL Server."
+              name="ADO NET Source"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement used by the component to extract data."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+    b.BILLING_ID,
+    b.DATE AS SaleDate,
+    b.CUSTOMER_ID,
+    b.EMPLOYEE_ID,
+
+    bd.PRODUCT_ID,
+    bd.QUANTITY,
+
+    b.REGION,
+
+    (
+        SELECT p.PRICE
+        FROM Prices p
+        WHERE p.PRODUCT_ID = bd.PRODUCT_ID
+          AND p.DATE &lt;= b.DATE
+        ORDER BY p.DATE DESC
+        LIMIT 1
+    ) AS UnitPrice,
+   0 AS DiscountPercent
+
+FROM Billing b
+
+INNER JOIN Billing_Detail bd
+    ON b.BILLING_ID = bd.BILLING_ID;</property>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">30</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether to allow non-string external columns to be implicitly converted to strings at the output columns."
+                  name="AllowImplicitStringConversion">true</property>
+                <property
+                  dataType="System.String"
+                  description="The Source database table name."
+                  expressionType="Notify"
+                  name="TableOrViewName"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specify the mode to retrieve external column information"
+                  name="AccessMode"
+                  typeConverter="Microsoft.SqlServer.Dts.Pipeline.DataReaderSourceAdapter+EnumToStringConverter">2</property>
+                <property
+                  dataType="System.String"
+                  name="UserComponentTypeName">Microsoft.DataReaderSourceAdapter</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\STAGING de actuales -Task\ADO NET Source.Connections[IDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[MySQLsales.root]"
+                  connectionManagerRefId="Package.ConnectionManagers[MySQLsales.root]"
+                  description="Managed connection manager"
+                  name="IDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output]"
+                  name="ADO NET Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[BILLING_ID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[BILLING_ID]"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[BILLING_ID]"
+                      name="BILLING_ID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[SaleDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[SaleDate]"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[SaleDate]"
+                      name="SaleDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[CUSTOMER_ID]"
+                      dataType="i2"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[CUSTOMER_ID]"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[CUSTOMER_ID]"
+                      name="CUSTOMER_ID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[EMPLOYEE_ID]"
+                      dataType="i2"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[EMPLOYEE_ID]"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[EMPLOYEE_ID]"
+                      name="EMPLOYEE_ID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[PRODUCT_ID]"
+                      dataType="i2"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[PRODUCT_ID]"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[PRODUCT_ID]"
+                      name="PRODUCT_ID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[QUANTITY]"
+                      dataType="i2"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[QUANTITY]"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[QUANTITY]"
+                      name="QUANTITY"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[REGION]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[REGION]"
+                      length="90"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[REGION]"
+                      name="REGION"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[UnitPrice]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[UnitPrice]"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[UnitPrice]"
+                      name="UnitPrice"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[DiscountPercent]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[DiscountPercent]"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[DiscountPercent]"
+                      name="DiscountPercent"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[BILLING_ID]"
+                      dataType="i4"
+                      name="BILLING_ID" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[SaleDate]"
+                      dataType="dbTimeStamp"
+                      name="SaleDate" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[CUSTOMER_ID]"
+                      dataType="i2"
+                      name="CUSTOMER_ID" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[EMPLOYEE_ID]"
+                      dataType="i2"
+                      name="EMPLOYEE_ID" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[PRODUCT_ID]"
+                      dataType="i2"
+                      name="PRODUCT_ID" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[QUANTITY]"
+                      dataType="i2"
+                      name="QUANTITY" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[REGION]"
+                      dataType="wstr"
+                      length="90"
+                      name="REGION" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[UnitPrice]"
+                      dataType="r8"
+                      name="UnitPrice" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[DiscountPercent]"
+                      dataType="i8"
+                      name="DiscountPercent" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output]"
+                  isErrorOut="true"
+                  name="ADO NET Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[BILLING_ID]"
+                      dataType="i4"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[BILLING_ID]"
+                      name="BILLING_ID" />
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[SaleDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[SaleDate]"
+                      name="SaleDate" />
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[CUSTOMER_ID]"
+                      dataType="i2"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[CUSTOMER_ID]"
+                      name="CUSTOMER_ID" />
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[EMPLOYEE_ID]"
+                      dataType="i2"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[EMPLOYEE_ID]"
+                      name="EMPLOYEE_ID" />
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[PRODUCT_ID]"
+                      dataType="i2"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[PRODUCT_ID]"
+                      name="PRODUCT_ID" />
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[QUANTITY]"
+                      dataType="i2"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[QUANTITY]"
+                      name="QUANTITY" />
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[REGION]"
+                      dataType="wstr"
+                      length="90"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[REGION]"
+                      name="REGION" />
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[UnitPrice]"
+                      dataType="r8"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[UnitPrice]"
+                      name="UnitPrice" />
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[DiscountPercent]"
+                      dataType="i8"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[DiscountPercent]"
+                      name="DiscountPercent" />
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\STAGING de actuales -Task\Derived Column"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="Derived Column"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\STAGING de actuales -Task\Derived Column.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\STAGING de actuales -Task\Derived Column.Inputs[Derived Column Input].Columns[ZipCode]"
+                      cachedDataType="wstr"
+                      cachedLength="90"
+                      cachedName="REGION"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[REGION]"
+                      name="ZipCode"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">#{Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[REGION]} == "North" ? "N0000" : #{Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[REGION]} == "South" ? "S0000" : #{Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[REGION]} == "East" ? "E0000" : #{Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[REGION]} == "West" ? "W0000" : "00000"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">ZipCode == "North" ? "N0000" : ZipCode == "South" ? "S0000" : ZipCode == "East" ? "E0000" : ZipCode == "West" ? "W0000" : "00000"</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\STAGING de actuales -Task\Derived Column.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\STAGING de actuales -Task\Derived Column.Inputs[Derived Column Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\STAGING de actuales -Task\Derived Column.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\STAGING de actuales -Task\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\STAGING de actuales -Task\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\STAGING de actuales -Task\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\STAGING de actuales -Task\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\STAGING de actuales -Task.Paths[ADO NET Source Output]"
+              endId="Package\STAGING de actuales -Task\Derived Column.Inputs[Derived Column Input]"
+              name="ADO NET Source Output"
+              startId="Package\STAGING de actuales -Task\ADO NET Source.Outputs[ADO NET Source Output]" />
+            <path
+              refId="Package\STAGING de actuales -Task.Paths[Derived Column Output]"
+              endId="Package\STAGING de actuales -Task\ADO NET Destination.Inputs[ADO NET Destination Input]"
+              name="Derived Column Output"
+              startId="Package\STAGING de actuales -Task\Derived Column.Outputs[Derived Column Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\STAGING de history sales -Task"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{DE047315-F31F-4A6B-959F-CCCC301AF087}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="STAGING de history sales -Task"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\STAGING de history sales -Task\ADO NET Destination"
+              componentClassID="Microsoft.ManagedComponentHost"
+              contactInfo="Loads data into an ADO.NET-compliant database that uses a database table or view. Load data into a new or existing table. For example, use an ADO.NET provider for ODBC to load data into an ODBC destination.;Microsoft Corporation; Microsoft SQL Server; © Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
+              description="Loads data into an ADO.NET-compliant database that uses a database table or view. Load data into a new or existing table. For example, use an ADO.NET provider for ODBC to load data into an ODBC destination."
+              name="ADO NET Destination"
+              usesDispositions="true"
+              version="2">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="The Destination database table name."
+                  expressionType="Notify"
+                  name="TableOrViewName"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">"dbo"."StageSales"</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specify the number of rows per batch. The default is 0 which uses the same size as SSIS internal buffer. "
+                  expressionType="Notify"
+                  name="BatchSize">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out. A value of 0 indicates infinite time-out. "
+                  expressionType="Notify"
+                  name="CommandTimeout">30</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Specifies whether to use the SqlBulkCopy interface to improve the performance of bulk insert operations. Only certain providers support this interface."
+                  expressionType="Notify"
+                  name="UseBulkInsertWhenPossible">true</property>
+                <property
+                  dataType="System.String"
+                  name="UserComponentTypeName">Microsoft.ADONETDestination</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\STAGING de history sales -Task\ADO NET Destination.Connections[IDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[localhost.DW_TDC]"
+                  connectionManagerRefId="Package.ConnectionManagers[localhost.DW_TDC]"
+                  description="Managed connection manager"
+                  name="IDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input]"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="ADO NET Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[BillingID]"
+                      cachedDataType="i4"
+                      cachedName="BillingID"
+                      externalMetadataColumnId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[BillingID]"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[BillingID]" />
+                    <inputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[SaleDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="SaleDate"
+                      externalMetadataColumnId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[SaleDate]"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[SaleDate]" />
+                    <inputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[CustomerID]"
+                      cachedDataType="i4"
+                      cachedName="CustomerID"
+                      externalMetadataColumnId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[CustomerID]"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[CustomerID]" />
+                    <inputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[EmployeeID]"
+                      cachedDataType="i4"
+                      cachedName="EmployeeID"
+                      externalMetadataColumnId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[EmployeeID]"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[EmployeeID]" />
+                    <inputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[ProductID]"
+                      cachedDataType="i4"
+                      cachedName="ProductID"
+                      externalMetadataColumnId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[ProductID]"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[ProductID]" />
+                    <inputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[Quantity]"
+                      cachedDataType="i4"
+                      cachedName="Quantity"
+                      externalMetadataColumnId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[Quantity]"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[Quantity]" />
+                    <inputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[UnitPrice]"
+                      cachedDataType="i4"
+                      cachedName="UnitPrice"
+                      externalMetadataColumnId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[UnitPrice]"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[UnitPrice]" />
+                    <inputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[DiscountPercent]"
+                      cachedDataType="i4"
+                      cachedName="DiscountPercent"
+                      externalMetadataColumnId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[DiscountPercent]"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[DiscountPercent]" />
+                    <inputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[ZipCode]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="ZipCode"
+                      externalMetadataColumnId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[ZipCode]"
+                      lineageId="Package\STAGING de history sales -Task\Derived Column.Outputs[Derived Column Output].Columns[ZipCode]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[BillingID]"
+                      dataType="i4"
+                      name="BillingID" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[SaleDate]"
+                      dataType="wstr"
+                      length="30"
+                      name="SaleDate" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[CustomerID]"
+                      dataType="wstr"
+                      length="20"
+                      name="CustomerID" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[ProductID]"
+                      dataType="wstr"
+                      length="20"
+                      name="ProductID" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[EmployeeID]"
+                      dataType="wstr"
+                      length="20"
+                      name="EmployeeID" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[ZipCode]"
+                      dataType="wstr"
+                      length="10"
+                      name="ZipCode" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[Quantity]"
+                      dataType="i4"
+                      name="Quantity" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[UnitPrice]"
+                      dataType="numeric"
+                      name="UnitPrice"
+                      precision="10"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[DiscountPercent]"
+                      dataType="numeric"
+                      name="DiscountPercent"
+                      precision="5"
+                      scale="2" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\STAGING de history sales -Task\ADO NET Destination.Outputs[ADO NET Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="ADO NET Destination Error Output"
+                  synchronousInputId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Destination.Outputs[ADO NET Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Destination.Outputs[ADO NET Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Destination.Outputs[ADO NET Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Destination.Outputs[ADO NET Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\STAGING de history sales -Task\ADO NET Source"
+              componentClassID="Microsoft.ManagedComponentHost"
+              contactInfo="Consumes data from SQL Server, OLE DB, ODBC, or Oracle, using the corresponding .NET Framework data provider. Use a Transact-SQL statement to define the result set. For example, extract data from SQL Server with the .NET Framework data provider for SQL Server.;Microsoft Corporation; Microsoft SQL Server; © Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="Consumes data from SQL Server, OLE DB, ODBC, or Oracle, using the corresponding .NET Framework data provider. Use a Transact-SQL statement to define the result set. For example, extract data from SQL Server with the .NET Framework data provider for SQL Server."
+              name="ADO NET Source"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement used by the component to extract data."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+    billing_id AS BillingID,
+    [date] AS SaleDate,
+    customer_id AS CustomerID,
+    employee_id AS EmployeeID,
+    product_id AS ProductID,
+    quantity AS Quantity,
+    NULL AS UnitPrice,
+    0 AS DiscountPercent
+
+FROM Billing;</property>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">30</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether to allow non-string external columns to be implicitly converted to strings at the output columns."
+                  name="AllowImplicitStringConversion">true</property>
+                <property
+                  dataType="System.String"
+                  description="The Source database table name."
+                  expressionType="Notify"
+                  name="TableOrViewName"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specify the mode to retrieve external column information"
+                  name="AccessMode"
+                  typeConverter="Microsoft.SqlServer.Dts.Pipeline.DataReaderSourceAdapter+EnumToStringConverter">2</property>
+                <property
+                  dataType="System.String"
+                  name="UserComponentTypeName">Microsoft.DataReaderSourceAdapter</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\STAGING de history sales -Task\ADO NET Source.Connections[IDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[localhost.TDChistorySales]"
+                  connectionManagerRefId="Package.ConnectionManagers[localhost.TDChistorySales]"
+                  description="Managed connection manager"
+                  name="IDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output]"
+                  name="ADO NET Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[BillingID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[BillingID]"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[BillingID]"
+                      name="BillingID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[SaleDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[SaleDate]"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[SaleDate]"
+                      name="SaleDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[CustomerID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[CustomerID]"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[CustomerID]"
+                      name="CustomerID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[EmployeeID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[EmployeeID]"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[EmployeeID]"
+                      name="EmployeeID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[ProductID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[ProductID]"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[ProductID]"
+                      name="ProductID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[Quantity]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[Quantity]"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[Quantity]"
+                      name="Quantity"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[UnitPrice]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[UnitPrice]"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[UnitPrice]"
+                      name="UnitPrice"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[DiscountPercent]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[DiscountPercent]"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].Columns[DiscountPercent]"
+                      name="DiscountPercent"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[BillingID]"
+                      dataType="i4"
+                      name="BillingID" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[SaleDate]"
+                      dataType="dbTimeStamp"
+                      name="SaleDate" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[CustomerID]"
+                      dataType="i4"
+                      name="CustomerID" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[EmployeeID]"
+                      dataType="i4"
+                      name="EmployeeID" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[ProductID]"
+                      dataType="i4"
+                      name="ProductID" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[Quantity]"
+                      dataType="i4"
+                      name="Quantity" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[UnitPrice]"
+                      dataType="i4"
+                      name="UnitPrice" />
+                    <externalMetadataColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output].ExternalColumns[DiscountPercent]"
+                      dataType="i4"
+                      name="DiscountPercent" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output]"
+                  isErrorOut="true"
+                  name="ADO NET Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[BillingID]"
+                      dataType="i4"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[BillingID]"
+                      name="BillingID" />
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[SaleDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[SaleDate]"
+                      name="SaleDate" />
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[CustomerID]"
+                      dataType="i4"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[CustomerID]"
+                      name="CustomerID" />
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[EmployeeID]"
+                      dataType="i4"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[EmployeeID]"
+                      name="EmployeeID" />
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[ProductID]"
+                      dataType="i4"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[ProductID]"
+                      name="ProductID" />
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[Quantity]"
+                      dataType="i4"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[Quantity]"
+                      name="Quantity" />
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[UnitPrice]"
+                      dataType="i4"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[UnitPrice]"
+                      name="UnitPrice" />
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[DiscountPercent]"
+                      dataType="i4"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[DiscountPercent]"
+                      name="DiscountPercent" />
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\STAGING de history sales -Task\Derived Column"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="Derived Column"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\STAGING de history sales -Task\Derived Column.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\STAGING de history sales -Task\Derived Column.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\STAGING de history sales -Task\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\Derived Column.Outputs[Derived Column Output].Columns[ZipCode]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="4"
+                      lineageId="Package\STAGING de history sales -Task\Derived Column.Outputs[Derived Column Output].Columns[ZipCode]"
+                      name="ZipCode"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">"0000"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">"0000"</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\STAGING de history sales -Task\Derived Column.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\STAGING de history sales -Task\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\STAGING de history sales -Task\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\STAGING de history sales -Task\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\STAGING de history sales -Task\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\STAGING de history sales -Task.Paths[ADO NET Source Output]"
+              endId="Package\STAGING de history sales -Task\Derived Column.Inputs[Derived Column Input]"
+              name="ADO NET Source Output"
+              startId="Package\STAGING de history sales -Task\ADO NET Source.Outputs[ADO NET Source Output]" />
+            <path
+              refId="Package\STAGING de history sales -Task.Paths[Derived Column Output]"
+              endId="Package\STAGING de history sales -Task\ADO NET Destination.Inputs[ADO NET Destination Input]"
+              name="Derived Column Output"
+              startId="Package\STAGING de history sales -Task\Derived Column.Outputs[Derived Column Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{69115522-CF13-4F6E-BAC6-B56770B8153F}"
+      DTS:From="Package\STAGING de history sales -Task"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\STAGING de actuales -Task" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{C6E2BEC9-0EF1-4239-B17E-1A0D199E9B0D}"
+      DTS:From="Package\STAGING de actuales -Task"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Execute SQL Task - Actualizar descuentos" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="218,42"
+          Id="Package\STAGING de actuales -Task"
+          TopLeft="117,134" />
+        <NodeLayout
+          Size="238,42"
+          Id="Package\STAGING de history sales -Task"
+          TopLeft="107,37" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="226,79">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,55"
+              Start="0,0"
+              End="0,47.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,47.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="288,42"
+          Id="Package\Execute SQL Task - Actualizar descuentos"
+          TopLeft="91,231" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="227.5,176">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,55"
+              Start="0,0"
+              End="0,47.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,47.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\STAGING de actuales -Task">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="158,42"
+          Id="Package\STAGING de actuales -Task\Derived Column"
+          TopLeft="105,87" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\STAGING de actuales -Task\ADO NET Source"
+          TopLeft="104,20" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\STAGING de actuales -Task\ADO NET Destination"
+          TopLeft="105,163" />
+        <EdgeLayout
+          Id="Package\STAGING de actuales -Task.Paths[Derived Column Output]"
+          TopLeft="184,129">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="14,34"
+              Start="0,0"
+              End="14,26.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,13" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,13"
+                    Point2="0,17"
+                    Point3="4,17" />
+                  <mssgle:LineSegment
+                    End="10,17" />
+                  <mssgle:CubicBezierSegment
+                    Point1="10,17"
+                    Point2="14,17"
+                    Point3="14,21" />
+                  <mssgle:LineSegment
+                    End="14,26.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\STAGING de actuales -Task.Paths[ADO NET Source Output]"
+          TopLeft="185.5,62">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,25"
+              Start="0,0"
+              End="0,17.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,17.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\STAGING de actuales -Task\ADO NET Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\STAGING de actuales -Task\ADO NET Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\STAGING de history sales -Task">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="158,42"
+          Id="Package\STAGING de history sales -Task\Derived Column"
+          TopLeft="159,120" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\STAGING de history sales -Task\ADO NET Source"
+          TopLeft="141,42" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\STAGING de history sales -Task\ADO NET Destination"
+          TopLeft="185,220" />
+        <EdgeLayout
+          Id="Package\STAGING de history sales -Task.Paths[ADO NET Source Output]"
+          TopLeft="224,84">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="14,36"
+              Start="0,0"
+              End="14,28.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,14" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,14"
+                    Point2="0,18"
+                    Point3="4,18" />
+                  <mssgle:LineSegment
+                    End="10,18" />
+                  <mssgle:CubicBezierSegment
+                    Point1="10,18"
+                    Point2="14,18"
+                    Point3="14,22" />
+                  <mssgle:LineSegment
+                    End="14,28.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\STAGING de history sales -Task.Paths[Derived Column Output]"
+          TopLeft="238,162">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="40,58"
+              Start="0,0"
+              End="40,50.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,25"
+                    Point2="0,29"
+                    Point3="4,29" />
+                  <mssgle:LineSegment
+                    End="36,29" />
+                  <mssgle:CubicBezierSegment
+                    Point1="36,29"
+                    Point2="40,29"
+                    Point3="40,33" />
+                  <mssgle:LineSegment
+                    End="40,50.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\STAGING de history sales -Task\ADO NET Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\STAGING de history sales -Task\ADO NET Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

@@ -1,0 +1,692 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/22/2026 11:50:51 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="localhost"
+  DTS:CreatorName="LOCALPC\usuario"
+  DTS:DTSID="{F9146D5D-F6BB-43C4-B160-5DF4E86D082B}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="17.0.1016.0"
+  DTS:LocaleID="11274"
+  DTS:ObjectName="2Load_DimProduct2"
+  DTS:PackageType="5"
+  DTS:VersionBuild="5"
+  DTS:VersionGUID="{B4B25685-06A2-4653-AAC9-A329111B5417}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[localhost.DW_TDC]"
+      DTS:CreationName="ADO.NET:Microsoft.Data.SqlClient.SqlConnection, Microsoft.Data.SqlClient, Version=5.0.0.0, Culture=neutral, PublicKeyToken=23ec7fc2d6eaa4a5"
+      DTS:DTSID="{8F31638A-1062-40C5-BDEF-20E0798C9BA8}"
+      DTS:ObjectName="localhost.DW_TDC">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=localhost;Initial Catalog=DW_TDC;Integrated Security=True;Trust Server Certificate=True;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Flat File Connection Manager]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{5E208DC7-6940-4547-9496-6D006155697F}"
+      DTS:ObjectName="Flat File Connection Manager">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="Delimited"
+          DTS:LocaleID="11274"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x003C_none_x003E_"
+          DTS:CodePage="1252"
+          DTS:ConnectionString="C:\TDC\Fuentes\Area Produccion\Products.txt">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="ProductId"
+              DTS:DTSID="{96C4A9AE-8471-43BE-89D2-88C0705CF2EF}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="ProductName"
+              DTS:DTSID="{ED5E5A22-6719-4088-ABE3-E0827CB31D75}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x000D__x000A_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="PackageType"
+              DTS:DTSID="{FB4207C7-B747-40C2-A427-627564D7E51F}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\CARGA DimProduct2"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{CF7A44CC-7C5E-407A-A505-7359A6565340}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="CARGA DimProduct2"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\CARGA DimProduct2\ADO NET Destination"
+              componentClassID="Microsoft.ManagedComponentHost"
+              contactInfo="Loads data into an ADO.NET-compliant database that uses a database table or view. Load data into a new or existing table. For example, use an ADO.NET provider for ODBC to load data into an ODBC destination.;Microsoft Corporation; Microsoft SQL Server; © Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
+              description="Loads data into an ADO.NET-compliant database that uses a database table or view. Load data into a new or existing table. For example, use an ADO.NET provider for ODBC to load data into an ODBC destination."
+              name="ADO NET Destination"
+              usesDispositions="true"
+              version="2">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="The Destination database table name."
+                  expressionType="Notify"
+                  name="TableOrViewName"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">"dbo"."DimProduct2"</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specify the number of rows per batch. The default is 0 which uses the same size as SSIS internal buffer. "
+                  expressionType="Notify"
+                  name="BatchSize">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out. A value of 0 indicates infinite time-out. "
+                  expressionType="Notify"
+                  name="CommandTimeout">30</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Specifies whether to use the SqlBulkCopy interface to improve the performance of bulk insert operations. Only certain providers support this interface."
+                  expressionType="Notify"
+                  name="UseBulkInsertWhenPossible">true</property>
+                <property
+                  dataType="System.String"
+                  name="UserComponentTypeName">Microsoft.ADONETDestination</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\CARGA DimProduct2\ADO NET Destination.Connections[IDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[localhost.DW_TDC]"
+                  connectionManagerRefId="Package.ConnectionManagers[localhost.DW_TDC]"
+                  description="Managed connection manager"
+                  name="IDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input]"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="ADO NET Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[ProductId]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="ProductId"
+                      externalMetadataColumnId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[ProductID]"
+                      lineageId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[ProductId]" />
+                    <inputColumn
+                      refId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[ProductName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="ProductName"
+                      externalMetadataColumnId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[ProductName]"
+                      lineageId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[ProductName]" />
+                    <inputColumn
+                      refId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[PackageType]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="PackageType"
+                      externalMetadataColumnId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[PackageType]"
+                      lineageId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[PackageType]" />
+                    <inputColumn
+                      refId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[IsDiet]"
+                      cachedDataType="i4"
+                      cachedName="IsDiet"
+                      externalMetadataColumnId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[IsDiet]"
+                      lineageId="Package\CARGA DimProduct2\Derived Column.Outputs[Derived Column Output].Columns[IsDiet]" />
+                    <inputColumn
+                      refId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[ProductCategory]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="ProductCategory"
+                      externalMetadataColumnId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[ProductCategory]"
+                      lineageId="Package\CARGA DimProduct2\Derived Column.Outputs[Derived Column Output].Columns[ProductCategory]" />
+                    <inputColumn
+                      refId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[UnitLiters]"
+                      cachedDataType="numeric"
+                      cachedName="UnitLiters"
+                      cachedPrecision="3"
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[UnitLiters]"
+                      lineageId="Package\CARGA DimProduct2\Derived Column.Outputs[Derived Column Output].Columns[UnitLiters]" />
+                    <inputColumn
+                      refId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].Columns[PackageCategory]"
+                      cachedDataType="wstr"
+                      cachedLength="6"
+                      cachedName="PackageCategory"
+                      externalMetadataColumnId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[PackageCategory]"
+                      lineageId="Package\CARGA DimProduct2\Derived Column.Outputs[Derived Column Output].Columns[PackageCategory]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[ProductKey]"
+                      dataType="i4"
+                      name="ProductKey" />
+                    <externalMetadataColumn
+                      refId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[ProductID]"
+                      dataType="wstr"
+                      length="50"
+                      name="ProductID" />
+                    <externalMetadataColumn
+                      refId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[ProductName]"
+                      dataType="wstr"
+                      length="100"
+                      name="ProductName" />
+                    <externalMetadataColumn
+                      refId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[ProductCategory]"
+                      dataType="wstr"
+                      length="50"
+                      name="ProductCategory" />
+                    <externalMetadataColumn
+                      refId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[PackageType]"
+                      dataType="wstr"
+                      length="50"
+                      name="PackageType" />
+                    <externalMetadataColumn
+                      refId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[UnitLiters]"
+                      dataType="numeric"
+                      name="UnitLiters"
+                      precision="10"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[IsDiet]"
+                      dataType="bool"
+                      name="IsDiet" />
+                    <externalMetadataColumn
+                      refId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input].ExternalColumns[PackageCategory]"
+                      dataType="wstr"
+                      length="10"
+                      name="PackageCategory" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\CARGA DimProduct2\ADO NET Destination.Outputs[ADO NET Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="ADO NET Destination Error Output"
+                  synchronousInputId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\CARGA DimProduct2\ADO NET Destination.Outputs[ADO NET Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\CARGA DimProduct2\ADO NET Destination.Outputs[ADO NET Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\CARGA DimProduct2\ADO NET Destination.Outputs[ADO NET Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\CARGA DimProduct2\ADO NET Destination.Outputs[ADO NET Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\CARGA DimProduct2\Derived Column"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="Derived Column"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\CARGA DimProduct2\Derived Column.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\CARGA DimProduct2\Derived Column.Inputs[Derived Column Input].Columns[ProductName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="ProductName"
+                      lineageId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[ProductName]" />
+                    <inputColumn
+                      refId="Package\CARGA DimProduct2\Derived Column.Inputs[Derived Column Input].Columns[PackageType]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="PackageType"
+                      lineageId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[PackageType]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\CARGA DimProduct2\Derived Column.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\CARGA DimProduct2\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\CARGA DimProduct2\Derived Column.Outputs[Derived Column Output].Columns[IsDiet]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\CARGA DimProduct2\Derived Column.Outputs[Derived Column Output].Columns[IsDiet]"
+                      name="IsDiet"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">[FINDSTRING](#{Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[ProductName]},"Diet",1) &gt; 0 ? 1 : 0</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">FINDSTRING(ProductName,"Diet",1) &gt; 0 ? 1 : 0</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\CARGA DimProduct2\Derived Column.Outputs[Derived Column Output].Columns[ProductCategory]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="12"
+                      lineageId="Package\CARGA DimProduct2\Derived Column.Outputs[Derived Column Output].Columns[ProductCategory]"
+                      name="ProductCategory"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">[FINDSTRING](#{Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[ProductName]},"Cola",1) &gt; 0 ? "Cola" : [FINDSTRING](#{Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[ProductName]},"Beer",1) &gt; 0 ? "Beer" : [FINDSTRING](#{Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[ProductName]},"Soda",1) &gt; 0 ? "Soda" : [FINDSTRING](#{Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[ProductName]},"Energy",1) &gt; 0 ? "Energy Drink" : "Juice"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">FINDSTRING(ProductName,"Cola",1) &gt; 0 ? "Cola" : FINDSTRING(ProductName,"Beer",1) &gt; 0 ? "Beer" : FINDSTRING(ProductName,"Soda",1) &gt; 0 ? "Soda" : FINDSTRING(ProductName,"Energy",1) &gt; 0 ? "Energy Drink" : "Juice"</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\CARGA DimProduct2\Derived Column.Outputs[Derived Column Output].Columns[UnitLiters]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\CARGA DimProduct2\Derived Column.Outputs[Derived Column Output].Columns[UnitLiters]"
+                      name="UnitLiters"
+                      precision="3"
+                      scale="2"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">#{Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[PackageType]} == "1 Liter" ? 1.0 : #{Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[PackageType]} == "2 Liter" ? 2.0 : #{Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[PackageType]} == "500 cm3 can" ? 0.5 : #{Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[PackageType]} == "670 cm3" ? 0.67 : 0.0</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">PackageType == "1 Liter" ? 1.0 : PackageType == "2 Liter" ? 2.0 : PackageType == "500 cm3 can" ? 0.5 : PackageType == "670 cm3" ? 0.67 : 0.0</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\CARGA DimProduct2\Derived Column.Outputs[Derived Column Output].Columns[PackageCategory]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="6"
+                      lineageId="Package\CARGA DimProduct2\Derived Column.Outputs[Derived Column Output].Columns[PackageCategory]"
+                      name="PackageCategory"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">[FINDSTRING](#{Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[PackageType]},"can",1) &gt; 0 ? "Can" : "Bottle"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">FINDSTRING(PackageType,"can",1) &gt; 0 ? "Can" : "Bottle"</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\CARGA DimProduct2\Derived Column.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\CARGA DimProduct2\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\CARGA DimProduct2\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\CARGA DimProduct2\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\CARGA DimProduct2\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\CARGA DimProduct2\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\CARGA DimProduct2\Flat File Source"
+              componentClassID="Microsoft.FlatFileSource"
+              contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Flat File Source"
+              localeId="11274"
+              name="Flat File Source"
+              usesDispositions="true"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Boolean"
+                  description="Specifies whether zero-length columns are treated as null."
+                  name="RetainNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of an output column containing the file name. If no name is specified, no output column containing the file name will be generated."
+                  name="FileNameColumnName"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\CARGA DimProduct2\Flat File Source.Connections[FlatFileConnection]"
+                  connectionManagerID="Package.ConnectionManagers[Flat File Connection Manager]"
+                  connectionManagerRefId="Package.ConnectionManagers[Flat File Connection Manager]"
+                  name="FlatFileConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output]"
+                  name="Flat File Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[ProductId]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[ProductId]"
+                      length="50"
+                      lineageId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[ProductId]"
+                      name="ProductId"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[ProductName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[ProductName]"
+                      length="50"
+                      lineageId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[ProductName]"
+                      name="ProductName"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[PackageType]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[PackageType]"
+                      length="50"
+                      lineageId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].Columns[PackageType]"
+                      name="PackageType"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[ProductId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="ProductId" />
+                    <externalMetadataColumn
+                      refId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[ProductName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="ProductName" />
+                    <externalMetadataColumn
+                      refId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[PackageType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="PackageType" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Error Output]"
+                  isErrorOut="true"
+                  name="Flat File Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                      codePage="1252"
+                      dataType="text"
+                      description="Flat File Source Error Output Column"
+                      lineageId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                      name="Flat File Source Error Output Column" />
+                    <outputColumn
+                      refId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\CARGA DimProduct2.Paths[Derived Column Output]"
+              endId="Package\CARGA DimProduct2\ADO NET Destination.Inputs[ADO NET Destination Input]"
+              name="Derived Column Output"
+              startId="Package\CARGA DimProduct2\Derived Column.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\CARGA DimProduct2.Paths[Flat File Source Output]"
+              endId="Package\CARGA DimProduct2\Derived Column.Inputs[Derived Column Input]"
+              name="Flat File Source Output"
+              startId="Package\CARGA DimProduct2\Flat File Source.Outputs[Flat File Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout
+          Size="185,42"
+          Id="Package\CARGA DimProduct2"
+          TopLeft="33,38" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\CARGA DimProduct2">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="156,42"
+          Id="Package\CARGA DimProduct2\Flat File Source"
+          TopLeft="77,24" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\CARGA DimProduct2\Derived Column"
+          TopLeft="80,103" />
+        <EdgeLayout
+          Id="Package\CARGA DimProduct2.Paths[Flat File Source Output]"
+          TopLeft="157,66">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,37"
+              Start="0,0"
+              End="0,29.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="186,42"
+          Id="Package\CARGA DimProduct2\ADO NET Destination"
+          TopLeft="76,196" />
+        <EdgeLayout
+          Id="Package\CARGA DimProduct2.Paths[Derived Column Output]"
+          TopLeft="159,145">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="10,51"
+              Start="0,0"
+              End="10,43.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,21.5"
+                    Point2="0,25.5"
+                    Point3="4,25.5" />
+                  <mssgle:LineSegment
+                    End="6,25.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="6,25.5"
+                    Point2="10,25.5"
+                    Point3="10,29.5" />
+                  <mssgle:LineSegment
+                    End="10,43.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\CARGA DimProduct2\ADO NET Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
